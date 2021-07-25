@@ -26,23 +26,30 @@ app.use(bodyParser.json());
 // Activation du système de protection helmet
 app.use(helmet());
 
-app.use((req, res, next) => {
-    console.log('Requête reçue !');
-    next();
-  });
+
+// Importation de la route posts
+const postsRoute = require('./routes/posts');
+
+app.use('/api/posts',postsRoute);
+
+// app.use('/api/loulou',(req, res, next) => {
+//     res.status(201).json({ message: 'Votre requête a bien été reçue !' });
+//     console.log('Requête reçue !');
+    
+//   });
   
-  app.use((req, res, next) => {
-    res.status(201);
-    next();
-  });
+//   app.use((req, res, next) => {
+//     res.status(201);
+//     next();
+//   });
   
-  app.use((req, res, next) => {
-    res.json({ message: 'Votre requête a bien été reçue !' });
-    next();
-  });
+//   app.use((req, res, next) => {
+//     res.json({ message: 'Votre requête a bien été reçue !' });
+//     next();
+//   });
   
-  app.use((req, res, next) => {
-    console.log('Réponse envoyée avec succès !');
-  });
+//   app.use((req, res, next) => {
+//     console.log('Réponse envoyée avec succès !');
+//   });
 
 module.exports = app;
