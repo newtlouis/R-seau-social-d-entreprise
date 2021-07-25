@@ -30,9 +30,11 @@ app.use(helmet());
 // Importation des routes
 const postsRoute = require('./routes/posts');
 const usersRoute = require('./routes/users');
+const commentsRoute = require('./routes/comments');
 
 app.use('/api/posts',postsRoute);
 app.use('/api/auth',usersRoute);
+app.use('/api/comments',commentsRoute);
 
 // app.use('/api/loulou',(req, res, next) => {
 //     res.status(201).json({ message: 'Votre requête a bien été reçue !' });
