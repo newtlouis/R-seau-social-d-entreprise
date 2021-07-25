@@ -27,10 +27,12 @@ app.use(bodyParser.json());
 app.use(helmet());
 
 
-// Importation de la route posts
+// Importation des routes
 const postsRoute = require('./routes/posts');
+const usersRoute = require('./routes/users');
 
 app.use('/api/posts',postsRoute);
+app.use('/api/auth',usersRoute);
 
 // app.use('/api/loulou',(req, res, next) => {
 //     res.status(201).json({ message: 'Votre requête a bien été reçue !' });
