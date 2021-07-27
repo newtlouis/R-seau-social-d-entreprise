@@ -1,5 +1,5 @@
   
-// const db = require('../database');
+const db = require('../database');
 
 // Création d'un post
 exports.newPost = (req,res,next) => {
@@ -25,12 +25,12 @@ exports.newPost = (req,res,next) => {
     console.log(post);
 
     // Injection du post dans la table post dans la BDD
-    // db.query('INSERT INTO post SET ?', post, (err, result) => {
-    //     if (err) return res.status(400).json({error : err});
-    //     return res.status(201).json({ message : "post enregistré dans la base de donnée"})
-    // });
+    db.query('INSERT INTO post SET ?', post, (err, result) => {
+        if (err) return res.status(400).json({error : err});
+        return res.status(201).json({ message : "post enregistré dans la base de donnée"})
+    });
 
-    res.status(201).json({ message: 'new post' });
+    // res.status(201).json({ message: 'new post' });
 }
 
 exports.getAllPosts = (req,res,next) => {
@@ -46,5 +46,11 @@ exports.updatePost = (req,res,next) => {
 }
 
 exports.deletePost = (req,res,next) => {
+    db.query('UPDATE post SET content = ? WHERE id = ?', [req.body.content, req.params.id],(err, result) => {
+        if (err) {
+            return res.status(400).json({ error: "Le post n'a pas pu être modifié" })
+        }
+        return res.status(200).json(result);
+    })
     res.status(200).json({ message: 'post supprimé' });
 }
