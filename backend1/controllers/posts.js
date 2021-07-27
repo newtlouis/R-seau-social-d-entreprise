@@ -18,8 +18,8 @@ exports.newPost = (req,res,next) => {
         id_user : req.id_user,
         content : req.body.content,
         image : image,
-        date : year + "-" + month + "-" + day + "-" + hour + "-" + min,
-        status : 1
+        date : year + "-" + month + "-" + day + "-" + hour + "-" + min
+        
     };
 
     console.log(post);
@@ -46,7 +46,7 @@ exports.updatePost = (req,res,next) => {
 }
 
 exports.deletePost = (req,res,next) => {
-    db.query('UPDATE post SET content = ? WHERE id = ?', [req.body.content, req.params.id],(err, result) => {
+    db.query('UPDATE post SET content = ? WHERE id = ?', [req.body.content, req.params.id],(err, result) => {                                                                       
         if (err) {
             return res.status(400).json({ error: "Le post n'a pas pu être modifié" })
         }
