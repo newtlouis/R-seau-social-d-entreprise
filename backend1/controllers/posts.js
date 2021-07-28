@@ -40,18 +40,25 @@ exports.getAllPosts = (req,res,next) => {
 }
 
 exports.getOnePost = (req,res,next) => {
-    res.status(200).json({ message: 'post' });
+    const data = {};
+    db.query('SELECT user.name,post.image, post.content, post.date, FROM post INNER JOIN user ON post.id_user=user.id_user WHERE id = ?', req.params.id, (err,result) => {
+        if (err) { return res.status(500).json({message: "le post n'a pas pu être récupéré" + err}) }
+        data.post = result;
+    });
+    db.query('SELECT comment.*, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user where comment.id_post = ? ORDER BY comment.date ASC ',req.params.id, (err,result) => {
+        if (err) { return res.status(500).json({message: "les commmentaires n'ont pas pu être récupérés" + err}) }
+        data.comments = result;
+        return res.status(200).json({data})
+    })
+
 }
 
 exports.updatePost = (req,res,next) => {
-    
+
     db.query('UPDATE post SET content = ? WHERE id = ?', [req.body.content, req.params.id],(err, result) => {                                                                       
-        if (err) {
-            return res.status(400).json({ error: "Le post n'a pas pu être modifié" })
-        }
+        if (err) { return res.status(400).json({ error: "Le post n'a pas pu être modifié" }) }
         return res.status(200).json(result);
     })
-    res.status(200).json({ message: 'post modifié' });
 }
 
 exports.deletePost = (req,res,next) => {
