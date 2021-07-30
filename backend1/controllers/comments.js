@@ -18,19 +18,28 @@ exports.newComment = (req,res,next) => {
 
     db.query('INSERT INTO comment SET ?', Comment, (err, result) => {
         if (err) return res.status(400).json({error : err});
-        return res.status(201).json({ message : "commentaire enregistré dans la base de donnée"})
+        return res.status(201).json({result})
     })
 
 }
 
 exports.getAllComments = (req,res,next) => {
-    res.status(200).json({ message: 'tous les comments' });
+    db.query('SELECT comment.content, comment.date_creation, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user LEFT JOIN post ON comment.id_post = post.id WHERE post.id_post = ? ', req.id_post, (err, result) => {
+        if (err) {return res.status(400).json({error : err})};
+        return res.status(200).json({result})
+    })
 }
 
-exports.updateComment = (req,res,next) => {
-    res.status(200).json({ message: 'comment modifié' });
+exports.updateComment = (req,res,next)=>  {
+    db.query('UPDATE comment SET comment = ? ', req.body.comment, (err, result) => {
+        if (err) return res.status(400).json({error : err});
+        return res.status(201).json({result})
+    })
 }
 
 exports.deleteComment = (req,res,next) => {
-    res.status(200).json({ message: 'comment supprimé' });
+    db.query('DELETE FROM comment WHERE id = ?', req.params.id, (err, result) => {
+        if (err) return res.status(400).json({error : err});
+        return res.status(201).json({result})
+    })
 }
