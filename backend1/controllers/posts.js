@@ -35,13 +35,6 @@ exports.getAllPosts = (req,res,next) => {
         if (err) return res.status(400).json({error : err});
         return res.status(201).json({result});
     });
-    
-
-    db.query('SELECT post.*, user.name FROM post INNER JOIN user WHERE post.id = ? ON post.id_user = user.id_user order by date DESC', (err, result) => {
-        if (err) return res.status(400).json({error : err});
-        return res.status(201).json({ message : "liste des posts envoyés"});
-    })
-
 };
 
 exports.getOnePost = (req,res,next) => {
