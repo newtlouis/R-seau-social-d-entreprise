@@ -22,22 +22,27 @@ exports.newPost = (req,res,next) => {
         
     };
 
-    console.log(post);
-
     // Injection du post dans la table post dans la BDD
     db.query('INSERT INTO post SET ?', post, (err, result) => {
         if (err) return res.status(400).json({error : err});
         return res.status(201).json({ message : "post enregistré dans la base de donnée"})
     });
 
-    // res.status(201).json({ message: 'new post' });
 }
 
 exports.getAllPosts = (req,res,next) => {
-    // db.query('SELECT * FROM post INNER JOIN comment WHERE ')
+    db.query('SELECT post.*, user.name FROM post INNER JOIN user ON post.id_user = user.id_user order by date DESC', (err, result) => {
+        if (err) return res.status(400).json({error : err});
+        return res.status(201).json({result});
+    });
+    
 
-    res.status(200).json({ message: 'tous les posts' });
-}
+    db.query('SELECT post.*, user.name FROM post INNER JOIN user WHERE post.id = ? ON post.id_user = user.id_user order by date DESC', (err, result) => {
+        if (err) return res.status(400).json({error : err});
+        return res.status(201).json({ message : "liste des posts envoyés"});
+    })
+
+};
 
 exports.getOnePost = (req,res,next) => {
     const data = {};
@@ -51,7 +56,7 @@ exports.getOnePost = (req,res,next) => {
         return res.status(200).json({data})
     })
 
-}
+};
 
 exports.updatePost = (req,res,next) => {
 
@@ -59,9 +64,12 @@ exports.updatePost = (req,res,next) => {
         if (err) { return res.status(400).json({ error: "Le post n'a pas pu être modifié" }) }
         return res.status(200).json(result);
     })
-}
+};
 
 exports.deletePost = (req,res,next) => {
-
-    res.status(200).json({ message: 'post supprimé' });
-}
+    id_post = req.params.id;
+    db.query('DELETE FROM post where id = ?',id_post,(err,result) =>{
+        if (err) { return res.status(400).json({ error: "Le post n'a pas pu être supprimé" }) }
+        return res.status(200).json({message: 'post supprimé'});
+    })
+};
