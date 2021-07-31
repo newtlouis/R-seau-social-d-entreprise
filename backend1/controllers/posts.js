@@ -15,16 +15,18 @@ exports.newPost = (req,res,next) => {
     if (req.file) { image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`}
 
     const post = {
-        id_user : req.id_user,
+        id_user : req.userId,
         content : req.body.content,
         image : image,
         date : year + "-" + month + "-" + day + "-" + hour + "-" + min
         
     };
+    console.log(post);
+
 
     // Injection du post dans la table post dans la BDD
     db.query('INSERT INTO post SET ?', post, (err, result) => {
-        if (err) return res.status(400).json({error : err});
+        if (err) return res.status(400).json({message : "loupé"+ err});
         return res.status(201).json({ message : "post enregistré dans la base de donnée"})
     });
 
