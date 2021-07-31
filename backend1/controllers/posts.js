@@ -21,7 +21,6 @@ exports.newPost = (req,res,next) => {
         date : year + "-" + month + "-" + day + "-" + hour + "-" + min
         
     };
-    console.log(post);
 
 
     // Injection du post dans la table post dans la BDD
