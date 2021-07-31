@@ -25,8 +25,6 @@ exports.signUp = (req,res,next) => {
         .catch(error => res.status(500).json({ message: "erreur dans le hashage:" + error }));    
     })
 
-    
-    // res.status(200).json({ message: 'new user' });
 }
 
 exports.login = (req,res,next) => {
@@ -44,7 +42,4 @@ exports.login = (req,res,next) => {
         res.status(200).json({token, userId : result[0].id_user, name : result[0].name})
     })
 
-
-
-    // res.status(200).json({ message: 'user connected' });
 }
