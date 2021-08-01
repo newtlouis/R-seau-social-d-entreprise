@@ -1,8 +1,10 @@
   
+const { json } = require('body-parser');
 const db = require('../database');
 
 // Création d'un post
-exports.newPost = (req,res,next) => {
+exports.newPost = (req,res,next) => {    
+
     const date = new Date();
     let min = date.getMinutes(); 
     let hour = date.getHours();
@@ -19,13 +21,14 @@ exports.newPost = (req,res,next) => {
         content : req.body.content,
         image : image,
         date : year + "-" + month + "-" + day + "-" + hour + "-" + min
-        
+
     };
+    console.log(post);
 
 
     // Injection du post dans la table post dans la BDD
     db.query('INSERT INTO post SET ?', post, (err, result) => {
-        if (err) return res.status(400).json({message : "loupé"+ err});
+        if (err) return res.status(400).json({message : "erreur dans l'enregistrement du post dans la bdd "+ err});
         return res.status(201).json({ message : "post enregistré dans la base de donnée"})
     });
 

@@ -10,6 +10,9 @@ const bodyParser = require('body-parser');
 // Ajout de "helmet" => Permet de sécuriser des applications Express en définissant divers en-têtes HTTP
 const helmet = require('helmet');
 
+// Package de node pour accéder aux fichiers
+const path = require('path');
+
 // Système de sécurité CORS
 app.use((req, res, next) => {
 
@@ -35,25 +38,6 @@ const commentsRoute = require('./routes/comments');
 app.use('/api/posts',postsRoute);
 app.use('/api/auth',usersRoute);
 app.use('/api/comments',commentsRoute);
-
-// app.use('/api/loulou',(req, res, next) => {
-//     res.status(201).json({ message: 'Votre requête a bien été reçue !' });
-//     console.log('Requête reçue !');
-    
-//   });
-  
-//   app.use((req, res, next) => {
-//     res.status(201);
-//     next();
-//   });
-  
-//   app.use((req, res, next) => {
-//     res.json({ message: 'Votre requête a bien été reçue !' });
-//     next();
-//   });
-  
-//   app.use((req, res, next) => {
-//     console.log('Réponse envoyée avec succès !');
-//   });
+app.use('/images', express.static(path.join(__dirname,'images')));
 
 module.exports = app;
