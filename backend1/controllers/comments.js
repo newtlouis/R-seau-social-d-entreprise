@@ -23,8 +23,9 @@ exports.newComment = (req,res,next) => {
 
 }
 
-exports.getAllComments = (req,res,next) => {
-    db.query('SELECT comment.content, comment.date_creation, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user LEFT JOIN post ON comment.id_post = post.id WHERE post.id_post = ? ', req.id_post, (err, result) => {
+exports.getAllCommentsForOnePost = (req,res,next) => {
+    const idPost = req.params.idPost;
+    db.query('SELECT comment.content, comment.date_creation, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user LEFT JOIN post ON comment.id_post = post.id WHERE post.id_post = ? ', idPost, (err, result) => {
         if (err) {return res.status(400).json({error : err})};
         return res.status(200).json({result})
     })

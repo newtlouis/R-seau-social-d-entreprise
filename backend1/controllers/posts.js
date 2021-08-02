@@ -42,16 +42,11 @@ exports.getAllPosts = (req,res,next) => {
 };
 
 exports.getOnePost = (req,res,next) => {
-    const data = {};
-    db.query('SELECT user.name,post.image, post.content, post.date, FROM post INNER JOIN user ON post.id_user=user.id_user WHERE id = ?', req.params.id, (err,result) => {
+    db.query('SELECT post.*, user.name FROM post INNER JOIN user ON post.id_user = user.id_user WHERE post.id = ?', req.params.id, (err,result) => {
         if (err) { return res.status(500).json({message: "le post n'a pas pu être récupéré" + err}) }
-        data.post = result;
+        return res.status(201).json({result});
     });
-    db.query('SELECT comment.*, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user where comment.id_post = ? ORDER BY comment.date ASC ',req.params.id, (err,result) => {
-        if (err) { return res.status(500).json({message: "les commmentaires n'ont pas pu être récupérés" + err}) }
-        data.comments = result;
-        return res.status(200).json({data})
-    })
+ 
 
 };
 
