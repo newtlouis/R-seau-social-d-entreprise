@@ -31,7 +31,7 @@ exports.getAllCommentsForOnePost = (req,res,next) => {
     const idPost = req.params.postId;
     // console.log(req); 
     console.log(idPost);
-    db.query('SELECT comment.comment, comment.date_comment, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user LEFT JOIN post ON comment.id_post = post.id WHERE post.id = ? ', idPost, (err, result) => {
+    db.query('SELECT comment.*, user.name FROM comment INNER JOIN user ON comment.id_user = user.id_user LEFT JOIN post ON comment.id_post = post.id WHERE post.id = ? ', idPost, (err, result) => {
         if (err) {return res.status(400).json({error : err})};
         return res.status(200).json({result})
     })
@@ -45,7 +45,8 @@ exports.updateComment = (req,res,next)=>  {
 }
 
 exports.deleteComment = (req,res,next) => {
-    db.query('DELETE FROM comment WHERE id = ?', req.params.id, (err, result) => {
+    console.log(req.params);
+    db.query('DELETE FROM comment WHERE id_comment = ?', req.params.id, (err, result) => {
         if (err) return res.status(400).json({error : err});
         return res.status(201).json({result})
     })
